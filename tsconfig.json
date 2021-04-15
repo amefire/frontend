@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true, //optional chaining: feature that allows us to access properties that are deeply nested
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
