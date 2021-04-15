@@ -5,40 +5,43 @@ import { Wrapper } from '../components/Wrapper';
 import { InputField } from '../components/InputField';
 import { Box } from '@chakra-ui/react';
 import { gql, useMutation } from 'urql';
+import { useRegisterMutation } from '../generated/graphql';
 //import { Response } from 'express';
 
-import { useRegisterMutation } from './../../../../trading-platform/src/generated/graphql';
-import { errors } from './../../.next/static/chunks/main';
-
+//import { useRegisterMutation } from './../../../../trading-platform/src/generated/graphql';
+//import { errors } from './../../.next/static/chunks/main';
+import { toErrorMap } from './../utils/toErrorMap';
+import {useRouter} from "next/router";
 interface registerProps {
 
 }
 
-const REGISTER_MUT =`mutation Register($username:String!, $password:String!){
-    register(options:{ username: $username password: $password  }){
+// const REGISTER_MUT =`mutation Register($username:String!, $password:String!){
+//     register(options:{ username: $username password: $password  }){
       
-      errors{
-      field
-      message
-    }
-      user{
+//       errors{
+//       field
+//       message
+//     }
+//       user{
        
-        username
-        createdAt
-        updatedAt
+//         username
+//         createdAt
+//         updatedAt
         
-      }
+//       }
       
-    }
-  }`
+//     }
+//   }`
 
       
     
   
 
  const Register: React.FC<registerProps> = ({}) => {
-    const [,register] = useMutation(REGISTER_MUT)
-   // const [,register] = useRegisterMutation() ;  
+   const router = useRouter();
+    //const [,register] = useMutation(REGISTER_MUT)
+    const [,register] = useRegisterMutation() ;  
     return (
             <Wrapper variant="small"><Formik
             initialValues={{ username: "", password:"" }}
@@ -51,13 +54,18 @@ const REGISTER_MUT =`mutation Register($username:String!, $password:String!){
               const response = await register(values);
               if(response.data?.register.errors)
               {
+                //creates an utility called toErrorMap that turns an array into an object(map)
 
-                setErrors({
-                  username: "hey error"
-                })
+                setErrors(toErrorMap(response.data.register.errors))
 
 
               }
+
+              else if(response.data?.register.user){
+
+                  router.push("/");
+              }
+    
              // response.data.register?.user?.id;
               
                //console.log(values);
