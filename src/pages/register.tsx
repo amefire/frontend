@@ -12,6 +12,8 @@ import { useRegisterMutation } from '../generated/graphql';
 //import { errors } from './../../.next/static/chunks/main';
 import { toErrorMap } from './../utils/toErrorMap';
 import {useRouter} from "next/router";
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from './../utils/createUrqlClient';
 interface registerProps {
 
 }
@@ -44,14 +46,14 @@ interface registerProps {
     const [,register] = useRegisterMutation() ;  
     return (
             <Wrapper variant="small"><Formik
-            initialValues={{ username: "", password:"" }}
+            initialValues={{ email: '', username: "", password:"" }}
             onSubmit={async(values, {setErrors}) => {
                // register({username:values.username, password: values.password});
               
               
               // const response = await register(values);
 
-              const response = await register(values);
+              const response = await register({options: values});
               if(response.data?.register.errors)
               {
                 //creates an utility called toErrorMap that turns an array into an object(map)
@@ -84,6 +86,12 @@ interface registerProps {
                     label="username"/>
                     </Box>
 
+                    <Box mt={4}><InputField name="email"
+                    placeholder="email"
+                    label="Email"
+                    />
+                    </Box>
+
                     <Box mt={4}><InputField name="password"
                     placeholder="password"
                     label="password"
@@ -101,4 +109,4 @@ interface registerProps {
         );
 }
 
-export default Register;
+export default withUrqlClient(createUrqlClient) (Register);
