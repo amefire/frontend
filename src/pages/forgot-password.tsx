@@ -60,4 +60,5 @@ import { useState } from 'react';
     </Wrapper>) 
 }
 
+
 export default withUrqlClient(createUrqlClient)(ForgotPassword);
