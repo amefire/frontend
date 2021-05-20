@@ -72,8 +72,9 @@ export type MutationLoginArgs = {
 
 export type Post = {
   __typename?: 'Post';
-  _id: Scalars['String'];
+  id: Scalars['Float'];
   createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
   title: Scalars['String'];
 };
 
@@ -92,7 +93,7 @@ export type QueryPostArgs = {
 
 export type User = {
   __typename?: 'User';
-  _id: Scalars['String'];
+  id: Scalars['Float'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
@@ -118,7 +119,7 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, '_id' | 'username'>
+  & Pick<User, 'id' | 'username'>
 );
 
 export type RegularUserResponseFragment = (
@@ -209,7 +210,7 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, '_id' | 'createdAt' | 'title'>
+    & Pick<Post, 'id' | 'createdAt' | 'title'>
   )> }
 );
 
@@ -221,7 +222,7 @@ export const RegularErrorFragmentDoc = gql`
     `;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
-  _id
+  id
   username
 }
     `;
@@ -301,7 +302,7 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 export const PostsDocument = gql`
     query Posts {
   posts {
-    _id
+    id
     createdAt
     title
   }

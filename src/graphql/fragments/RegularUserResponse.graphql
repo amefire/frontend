@@ -3,7 +3,7 @@ fragment RegularUserResponse on UserResponse {
     ...RegularError
   }
   user {
-    # _id
+    # id
     # username
     ...RegularUser
   }

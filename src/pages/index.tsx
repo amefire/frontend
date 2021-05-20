@@ -21,7 +21,7 @@ return(
   <NavBar/>
   <div>hello world</div>
 
-  {!data ?<div>loading...</div> : data.posts.map(p => <div key ={p._id}>{p.title}</div>)}
+  {!data ?<div>loading...</div> : data.posts.map(p => <div key ={p.id}>{p.title}</div>)}
 
   </>
 )
