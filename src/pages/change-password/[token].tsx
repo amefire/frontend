@@ -19,7 +19,7 @@ import { withApollo } from "../../utils/withApollo";
 //import { withApollo } from "../../utils/withApollo";
 import { query } from '@urql/exchange-graphcache';
 
-const ChangePassword: NextPage<{token: string}> =({token})  => {
+const ChangePassword: NextPage =()  => {
   const router = useRouter();
   const [,changePassword] = useChangePasswordMutation();
   const [tokenError, setTokenError] = useState("");
@@ -31,7 +31,7 @@ const ChangePassword: NextPage<{token: string}> =({token})  => {
           const response = await changePassword({
             
               newPassword: values.newPassword,
-              token,
+              token: typeof router.query.token ==="string" ? router.query.token : "",
               
           });
           if (response.data?.changePassword.errors) {
@@ -79,10 +79,6 @@ const ChangePassword: NextPage<{token: string}> =({token})  => {
   );
 };
 
-ChangePassword.getInitialProps=({query}) =>{
-  return {
-    token: query.token as string,
-  };
-};
+
 
 export default withUrqlClient(createUrqlClient, {ssr:false})(ChangePassword);

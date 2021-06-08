@@ -52,7 +52,9 @@ import { createUrqlClient } from '../utils/createUrqlClient';
               
               // const response = await register(values);
 
+
               const response = await login({usernameOrEmail:values.usernameOrEmail, password:values.password});
+            
               if(response.data?.login.errors)
               {
                 //creates an utility called toErrorMap that turns an array into an object(map)
@@ -64,7 +66,12 @@ import { createUrqlClient } from '../utils/createUrqlClient';
 
               else if(response.data?.login.user){
 
+                if (typeof router.query.next === "string") {
+                  router.push(router.query.next);
+                } else {
+                  // worked
                   router.push("/");
+                }
               }
     
              // response.data.register?.user?.id;

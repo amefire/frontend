@@ -1,8 +1,24 @@
-import { dedupExchange, fetchExchange } from "urql";
+import { dedupExchange, Exchange, fetchExchange } from "urql";
 
 import { cacheExchange, query } from '@urql/exchange-graphcache';//This is a urql package that will help updates the caches on the browser
 import { LogoutMutation, MeQuery, MeDocument, LoginMutation, RegisterMutation } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
+import Router  from "next/router";
+import {pipe, tap} from "wonka";
+
+
+const errorExchange: Exchange = ({ forward }) => (ops$) => { // for global error handling
+  return pipe(
+    forward(ops$),
+    tap(({ error }) => {
+      if (error?.message.includes("not authenticated")) {
+         Router.replace("/login"); // redirect
+        // Router.replace(null)
+     // Router.replace()
+      }
+    })
+  );
+};
 
 
 export const createUrqlClient = (ssrExchange:any) =>({
@@ -53,5 +69,5 @@ export const createUrqlClient = (ssrExchange:any) =>({
      
    },
     
-  },},}), ssrExchange, fetchExchange,],
+  },},}),  errorExchange, ssrExchange, fetchExchange,],
 } );
